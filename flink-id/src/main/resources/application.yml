@@ -1,0 +1,45 @@
+server:
+  port: 8899
+
+spring:
+  profiles:
+    active: druid
+
+  # quartz配置
+  quartz:
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: DefaultQuartzScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: false
+            clusterCheckinInterval: 10000
+            useProperties: true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+          dataSource:
+            default:
+              URL: jdbc:mysql://10.67.65.25:33060/quartz?useUnicode=true&characterEncoding=utf-8&serverTime=UTC&serverTimezone=GMT&allowPublicKeyRetrieval=true&useSSL=false
+              user: root
+              password: 123456
+              driver: com.mysql.cj.jdbc.Driver
+              connectionProvider:
+                class: config.datapooldruid.DruidConnectionProvider
+    # 选择JDBC持久
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+
+
+# TriggerUtils计算某Cron下X次的执行时间
+computed:
+  times: 10
+
